@@ -55,27 +55,29 @@ const Navbar = () => {
       <div className="container-custom section-padding py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center space-x-3"
-          >
-            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
-              <Image 
-                src="/images/socker_logo.jpg" 
-                alt="Kids Soccer School Logo" 
-                width={40}
-                height={40}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="block">
-              <h1 className="text-lg sm:text-xl font-bold text-royal-blue">
-                {t('common.academy_name')}
-              </h1>
-              <p className="hidden sm:block text-sm text-gray-600">{t('common.tagline')}</p>
-            </div>
-          </motion.div>
+          <Link href="/" locale={router.locale}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+            >
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
+                <Image 
+                  src="/images/socker_logo.jpg" 
+                  alt="Kids Soccer School Logo" 
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="block">
+                <h1 className="text-lg sm:text-xl font-bold text-royal-blue">
+                  {t('common.academy_name')}
+                </h1>
+                <p className="hidden sm:block text-sm text-gray-600">{t('common.tagline')}</p>
+              </div>
+            </motion.div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">

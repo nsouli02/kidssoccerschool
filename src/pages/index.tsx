@@ -25,8 +25,15 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [router.locale])
 
-  // Scroll to top on initial page load
+  // Handle page refresh with hash fragments - redirect to homepage
   useEffect(() => {
+    // Check if there's a hash fragment in the URL on page load
+    if (window.location.hash) {
+      // Remove hash and redirect to clean homepage URL
+      const cleanUrl = window.location.pathname + window.location.search
+      window.history.replaceState(null, '', cleanUrl)
+    }
+    // Scroll to top on initial page load
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
 
