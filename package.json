@@ -1,0 +1,42 @@
+{
+  "name": "kids-soccer-school-website",
+  "version": "1.0.0",
+  "description": "Bilingual landing page for Kids Soccer School",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "keywords": [
+    "youth soccer",
+    "football school",
+    "bilingual",
+    "next.js"
+  ],
+  "author": "Kids Soccer School",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^24.0.15",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "autoprefixer": "^10.4.21",
+    "framer-motion": "^12.23.6",
+    "i18next": "^25.3.2",
+    "next": "^15.4.2",
+    "next-i18next": "^15.4.2",
+    "postcss": "^8.5.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.6.0",
+    "react-intersection-observer": "^9.16.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.2",
+    "tailwindcss": "^3.4.0"
+  }
+}

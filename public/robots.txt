@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kidssoccerschool.com/sitemap.xml
+
+# Block admin or sensitive areas if any (none for this site)
+# Disallow: /admin/ 

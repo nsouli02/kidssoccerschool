@@ -1,0 +1,148 @@
+{
+  "common": {
+    "academy_name": "Kids Soccer School",
+    "tagline": "Building Character Through Football",
+    "language": "English",
+    "language_short": "EN"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "programs": "Programs",
+    "gallery": "Gallery",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Building Character Through Football",
+    "subtitle": "Join our school where young athletes develop skills, confidence, and lifelong friendships through the beautiful game.",
+    "cta_primary": "Join Our School",
+    "cta_secondary": "Learn More"
+  },
+  "about": {
+    "title": "About Our School",
+    "subtitle": "Nurturing Tomorrow's Champions",
+    "description": "At Kids Soccer School, we believe football is more than just a game. It's a pathway to building character, developing life skills, and creating lasting friendships.",
+    "coach_name": "Head Coach",
+    "coach_title": "Founder & Head Coach",
+    "coach_bio": "With over 15 years of experience coaching youth football, our head coach is passionate about developing both athletic skills and personal character in young players.",
+    "values": {
+      "title": "Our Core Values",
+      "sportsmanship": {
+        "title": "Sportsmanship",
+        "description": "Respect for opponents, teammates, and officials"
+      },
+      "teamwork": {
+        "title": "Teamwork",
+        "description": "Learning to work together towards common goals"
+      },
+      "confidence": {
+        "title": "Confidence",
+        "description": "Building self-esteem through skill development"
+      }
+    },
+    "facts": {
+      "title": "Quick Facts",
+      "established": "Established in 2011",
+      "location": "Cyprus Training Ground",
+      "ages": "Ages 3-17 Welcome"
+    }
+  },
+  "programs": {
+    "title": "Age Groups & Programs",
+    "subtitle": "Professional football training for boys & girls (3-17 years) with competitive sections, grassroots development, and specialized training programs.",
+    "training_schedule": "Details:",
+    "learn_more": "Learn More",
+    "ready_to_start": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Join hundreds of young athletes who have already discovered their potential with us.",
+      "button": "Join Our School Today"
+    },
+    "age_groups": {
+      "competitive": {
+        "title": "Competitive Sections - CFA Elite Category",
+        "description": "Professional competitive teams playing in Cyprus Football Association Elite Category with Ethnikos Achna.",
+        "schedule": "U17 (2009) • U16 (2010) • U15 (2011) • U14 (2012)"
+      },
+              "grassroots": {
+          "title": "Grassroots Development (U6-U13)", 
+                  "description": "Youth development program with GRASSROOTS tournaments 2013-2020, focusing on fun and skill building.",
+          "schedule": "Ages 6-13 • Multiple training sessions weekly"
+      },
+              "specialized": {
+          "title": "Specialized Training Programs",
+                  "description": "Professional goalkeeper training and personal coaching sessions for individual skill improvement.",
+          "schedule": "Goalkeeper Training • Personal Training Available"
+      },
+              "girls": {
+          "title": "Pancyprian Championship for Girls",
+                  "description": "Competitive girls' teams participating in official Pancyprian championships across all age groups.",
+          "schedule": "U18 (11v11) • U15 (11v11) • U13 (9v9) • U11 (7v7)"
+      },
+              "disney": {
+          "title": "Disney Playmakers (UEFA) - FREE",
+                            "description": "Modern fitness & soccer training program designed specifically for girls aged 4-8 years - completely free!",
+          "schedule": "Girls 4-8 years • Fun-based learning"
+        },
+        "bambini": {
+          "title": "BAMBINI (3-5 years)",
+          "description": "Preschool Soccer Program 2021-2022 designed for our youngest players to develop basic motor skills.",
+          "schedule": "Ages 3-5 • Early childhood development focus"
+        }
+    }
+  },
+  "gallery": {
+    "title": "Our Moments",
+    "subtitle": "Moments from Training & Matches"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to join our football family?",
+    "form": {
+      "name": "Child's Name",
+      "email": "Parent's Email",
+      "phone": "Phone Number",
+      "age": "Child's Age",
+      "message": "Message",
+      "submit": "Send Message"
+    },
+    "info": {
+      "contact_label": "Contact Information",
+      "phone_label": "Phone",
+      "email_label": "Email", 
+      "location_label": "Location",
+      "phone": "+357 99530979",
+      "phone_secondary": "+357 99862412",
+      "phone_contact_1": "Kypros Pitsillos",
+      "phone_contact_2": "Christina Pitsillou",
+      "email": "kids.soccer.school@gmail.com",
+      "address": "Training Center, Nicosia, Cyprus"
+    }
+  },
+  "social": {
+    "title": "Follow Our Journey",
+    "subtitle": "Stay connected with Kids Soccer School and watch our young athletes grow and achieve their dreams",
+    "facebook_description": "Get updates, photos, and community highlights from our training sessions and events.",
+    "instagram_description": "Follow our daily activities, behind-the-scenes moments, and inspiring player stories.",
+    "tiktok_description": "Watch fun training videos, skills tutorials, and exciting match highlights.",
+    "follow_us": "Follow Us",
+    "cta_title": "Join Our Community",
+    "cta_subtitle": "Share your soccer journey with us and inspire other young athletes in our community.",
+    "share_button": "Share Your Story",
+    "tag_button": "Tag Us in Posts"
+  },
+  "map": {
+    "title": "Find Our Training Grounds",
+    "subtitle": "We train at multiple locations - select your preferred training ground",
+    "location_name": "Michalonikeio Stadium of Xylofagou",
+    "location_name_2": "Training Fields of Ethnikos Achna",
+    "location_name_3": "Futsal Ethnikou Achnas",
+    "select_location": "Select Training Location:",
+    "coordinates": "Coordinates",
+    "open_in": "Open in Map App"
+  },
+  "footer": {
+    "copyright": "© 2025 Kids Soccer School. All rights reserved.",
+    "social": "Follow Us",
+    "quick_links": "Quick Links"
+  }
+} 
