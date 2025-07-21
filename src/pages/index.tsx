@@ -32,9 +32,15 @@ export default function Home() {
       // Remove hash and redirect to clean homepage URL
       const cleanUrl = window.location.pathname + window.location.search
       window.history.replaceState(null, '', cleanUrl)
+      
+      // Force scroll to top after hash removal with slight delay
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' })
+      }, 0)
+    } else {
+      // Scroll to top on initial page load
+      window.scrollTo({ top: 0, behavior: 'instant' })
     }
-    // Scroll to top on initial page load
-    window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
 
   return (
