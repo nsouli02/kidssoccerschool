@@ -34,6 +34,7 @@ const Navbar = () => {
     { name: t('navigation.programs'), href: '#programs' },
     { name: t('navigation.gallery'), href: '#gallery' },
     { name: t('navigation.contact'), href: '#contact' },
+    { name: t('navigation.location'), href: '#location' },
   ]
 
   const toggleLanguage = () => {
@@ -68,11 +69,11 @@ const Navbar = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-royal-blue">
+            <div className="block">
+              <h1 className="text-lg sm:text-xl font-bold text-royal-blue">
                 {t('common.academy_name')}
               </h1>
-              <p className="text-sm text-gray-600">{t('common.tagline')}</p>
+              <p className="hidden sm:block text-sm text-gray-600">{t('common.tagline')}</p>
             </div>
           </motion.div>
 

@@ -51,7 +51,7 @@ const MapSection = () => {
   const embedUrl = `https://maps.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}&t=h&z=17&ie=UTF8&iwloc=&output=embed`
 
   return (
-    <section className="section-padding bg-white">
+    <section id="location" className="section-padding bg-white">
       <div className="container-custom">
         <motion.div
           ref={ref}
