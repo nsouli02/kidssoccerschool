@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://kidssoccerschool.com/sitemap.xml
+Sitemap: https://kidssoccerschool.vercel.app/sitemap.xml
 
 # Block admin or sensitive areas if any (none for this site)
 # Disallow: /admin/ 

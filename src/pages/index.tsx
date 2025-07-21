@@ -42,14 +42,14 @@ export default function Home() {
         <meta property="og:title" content={`${t('common.academy_name')} - ${t('common.tagline')}`} />
         <meta property="og:description" content="Professional youth soccer school building character through football" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://kidssoccerschool.com" />
-        <meta property="og:image" content="https://kidssoccerschool.com/images/soccer_background_2.jpg" />
+        <meta property="og:url" content="https://kidssoccerschool.vercel.app" />
+        <meta property="og:image" content="https://kidssoccerschool.vercel.app/images/soccer_background_2.jpg" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${t('common.academy_name')} - ${t('common.tagline')}`} />
         <meta name="twitter:description" content="Professional youth soccer school building character through football" />
-        <meta name="twitter:image" content="https://kidssoccerschool.com/images/soccer_background_2.jpg" />
+        <meta name="twitter:image" content="https://kidssoccerschool.vercel.app/images/soccer_background_2.jpg" />
         
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
@@ -66,8 +66,8 @@ export default function Home() {
               "@type": "SportsClub",
               "name": t('common.academy_name'),
               "description": "Professional youth soccer school building character through football",
-              "url": "https://kidssoccerschool.com",
-              "logo": "https://kidssoccerschool.com/images/socker_logo.jpg",
+              "url": "https://kidssoccerschool.vercel.app",
+              "logo": "https://kidssoccerschool.vercel.app/images/socker_logo.jpg",
               "telephone": "+357 99530979",
               "email": "kids.soccer.school@gmail.com",
               "address": {

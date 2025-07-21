@@ -2,21 +2,85 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <!-- Homepage - English -->
   <url>
-    <loc>https://kidssoccerschool.com/</loc>
+    <loc>https://kidssoccerschool.vercel.app/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://kidssoccerschool.com/" />
-    <xhtml:link rel="alternate" hreflang="gr" href="https://kidssoccerschool.com/gr/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kidssoccerschool.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="gr" href="https://kidssoccerschool.vercel.app/gr/" />
   </url>
   
   <!-- Homepage - Greek -->
   <url>
-    <loc>https://kidssoccerschool.com/gr/</loc>
+    <loc>https://kidssoccerschool.vercel.app/gr/</loc>
     <lastmod>2025-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://kidssoccerschool.com/" />
-    <xhtml:link rel="alternate" hreflang="gr" href="https://kidssoccerschool.com/gr/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kidssoccerschool.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="gr" href="https://kidssoccerschool.vercel.app/gr/" />
+  </url>
+  
+  <!-- Section Pages - English -->
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/#about</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/#programs</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/#gallery</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/#contact</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/#location</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Section Pages - Greek -->
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/gr#about</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/gr#programs</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/gr#gallery</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/gr#contact</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kidssoccerschool.vercel.app/gr#location</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset> 
