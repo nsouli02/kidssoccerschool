@@ -39,10 +39,10 @@ const MapSection = () => {
   const [mapKey, setMapKey] = useState(0)
   const [mapError, setMapError] = useState(false)
 
-  // Reset to first location when language changes
+  // Reset to first location when language changes and translations update
   useEffect(() => {
     setSelectedLocation(locations[0])
-  }, [router.locale])
+  }, [router.locale, t('map.location_name')])
 
   // Force map reload when location changes
   useEffect(() => {
