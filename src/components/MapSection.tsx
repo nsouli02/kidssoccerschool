@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
 import { useInView } from 'react-intersection-observer'
 
 const MapSection = () => {
   const { t } = useTranslation('common')
+  const router = useRouter()
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -36,6 +38,11 @@ const MapSection = () => {
   const [selectedLocation, setSelectedLocation] = useState(locations[0])
   const [mapKey, setMapKey] = useState(0)
   const [mapError, setMapError] = useState(false)
+
+  // Reset to first location when language changes
+  useEffect(() => {
+    setSelectedLocation(locations[0])
+  }, [router.locale])
 
   // Force map reload when location changes
   useEffect(() => {
