@@ -32,7 +32,7 @@ interface AnnouncementFormData {
 }
 
 export default function Admin() {
-  const { t } = useTranslation('common')
+  const { t, ready } = useTranslation('common')
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
@@ -357,7 +357,7 @@ export default function Admin() {
     })
   }
 
-  if (loading) {
+  if (loading || !ready) {
     return (
       <div className="min-h-screen bg-soft-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-royal-blue"></div>
@@ -776,9 +776,12 @@ export default function Admin() {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  // Use Next.js detected locale or fallback to 'en'
+  const currentLocale = locale || 'en'
+  
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+      ...(await serverSideTranslations(currentLocale, ['common'])),
     },
   }
 } 
