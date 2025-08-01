@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -44,8 +44,9 @@ const Navbar = () => {
     }
   }, [])
 
-  // Create navigation array with proper translation loading
-  const navigation = useMemo(() => [
+
+
+  const navigation = [
     { name: t('navigation.home'), href: '#home', isSection: true },
     { name: t('navigation.about'), href: '#about', isSection: true },
     { name: t('navigation.programs'), href: '#programs', isSection: true },
@@ -53,7 +54,7 @@ const Navbar = () => {
     { name: t('navigation.contact'), href: '#contact', isSection: true },
     { name: t('navigation.location'), href: '#location', isSection: true },
     { name: t('navigation.announcements'), href: '/announcements', isSection: false },
-  ], [t])
+  ]
 
   const handleNavigation = async (item: { href: string; isSection: boolean }) => {
     // Prevent multiple simultaneous navigations
@@ -134,9 +135,9 @@ const Navbar = () => {
             </div>
               <div className="block">
                 <h1 className="text-lg sm:text-xl font-bold text-royal-blue">
-                {t('academy_name')}
+                {t('common.academy_name')}
               </h1>
-                <p className="hidden sm:block text-sm text-gray-600">{t('tagline')}</p>
+                <p className="hidden sm:block text-sm text-gray-600">{t('common.tagline')}</p>
             </div>
           </motion.div>
           </Link>
