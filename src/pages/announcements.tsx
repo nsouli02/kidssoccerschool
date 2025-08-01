@@ -281,9 +281,9 @@ export default function Announcements() {
           </button>
           
           {/* Scrollable content container */}
-          <div className="min-h-full flex items-center justify-center p-4 py-8">
+          <div className="min-h-full flex flex-col items-center justify-center p-4 py-8">
             <div 
-              className="relative w-full max-w-4xl"
+              className="relative flex flex-col items-center"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
