@@ -359,17 +359,29 @@ export default function Admin() {
     }
   }
 
-  const formatDate = (dateString: string) => {
+  // Format event dates - preserve exact time entered (use UTC)
+  const formatEventDate = (dateString: string) => {
     const date = new Date(dateString)
-    // Keep admin panel in English regardless of site language
-    // Use UTC methods to avoid timezone conversion issues
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      timeZone: 'UTC' // Display the time as intended without timezone conversion
+      timeZone: 'UTC' // Preserve intended event time
+    })
+  }
+
+  // Format posted/updated dates - show in local timezone
+  const formatPostedDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+      // No timeZone specified - uses local timezone
     })
   }
 
@@ -506,8 +518,9 @@ export default function Admin() {
         
         <main className="pt-24 pb-16">
           <div className="container-custom section-padding">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-8 mb-8">
-              <div className="flex justify-between items-center">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-4 sm:p-8 mb-8">
+              {/* Desktop Layout */}
+              <div className="hidden md:flex justify-between items-center">
                 <div>
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-royal-blue to-blue-600 bg-clip-text text-transparent mb-2">
                     Admin Dashboard
@@ -535,6 +548,38 @@ export default function Admin() {
                   </button>
                 </div>
               </div>
+
+              {/* Mobile Layout */}
+              <div className="md:hidden">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-royal-blue to-blue-600 bg-clip-text text-transparent mb-1">
+                      Admin Dashboard
+                    </h1>
+                    <p className="text-sm text-gray-600">Manage announcements and content</p>
+                  </div>
+                  <button 
+                    onClick={signOut} 
+                    className="px-3 py-2 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 flex items-center space-x-1"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1" />
+                    </svg>
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-royal-blue to-blue-600 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Welcome back,</p>
+                    <p className="text-sm font-semibold text-gray-700">{user.email}</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mb-8">
@@ -549,7 +594,7 @@ export default function Admin() {
                   showForm 
                     ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300' 
                     : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl'
-                } px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] flex items-center space-x-2`}
+                } px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center space-x-2 w-full sm:w-auto`}
               >
                 {showForm ? (
                   <>
@@ -563,7 +608,7 @@ export default function Admin() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    <span>Create New Announcement</span>
+                    <span className="whitespace-nowrap">Create New Announcement</span>
                   </>
                 )}
               </button>
@@ -732,11 +777,12 @@ export default function Admin() {
               ) : (
                 <div className="space-y-4">
                   {announcements.map((announcement) => (
-                    <div key={announcement.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 hover:shadow-xl transition-all duration-200">
-                      <div className="flex justify-between items-start mb-4">
+                    <div key={announcement.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6 hover:shadow-xl transition-all duration-200">
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:flex justify-between items-start mb-4">
                         <div>
                           <h3 className="text-xl font-bold text-royal-blue">{announcement.title}</h3>
-                          <p className="text-sm text-gray-500">Posted: {formatDate(announcement.updatedAt)}</p>
+                          <p className="text-sm text-gray-500">Posted: {formatPostedDate(announcement.updatedAt)}</p>
                         </div>
                         <div className="flex space-x-2">
                           <button
@@ -753,20 +799,48 @@ export default function Admin() {
                           </button>
                         </div>
                       </div>
+
+                      {/* Mobile Layout */}
+                      <div className="sm:hidden mb-4">
+                        <div className="mb-3">
+                          <h3 className="text-lg font-bold text-royal-blue mb-1">{announcement.title}</h3>
+                          <p className="text-xs text-gray-500">Posted: {formatPostedDate(announcement.updatedAt)}</p>
+                        </div>
+                        <div className="flex space-x-3">
+                          <button
+                            onClick={() => handleEdit(announcement)}
+                            className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm font-medium flex items-center justify-center space-x-2"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(announcement.id)}
+                            className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm font-medium flex items-center justify-center space-x-2"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </div>
                       
-                      <p className="text-gray-700 mb-4 line-clamp-3">{announcement.content}</p>
+                      <p className="text-gray-700 mb-4 line-clamp-3 text-sm sm:text-base">{announcement.content}</p>
                       
-                      <div className="space-y-3 text-sm text-gray-600">
-                        <div>
+                      <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
+                        <div className="break-words">
                           <span className="font-medium">Location:</span> {announcement.location || 'None'}
                         </div>
-                        <div>
-                          <span className="font-medium">Event Date:</span> {announcement.eventDate ? formatDate(announcement.eventDate) : 'None'}
+                        <div className="break-words">
+                          <span className="font-medium">Event Date:</span> {announcement.eventDate ? formatEventDate(announcement.eventDate) : 'None'}
                         </div>
                         {announcement.imageUrl && (
                           <div>
                             <div className="font-medium mb-2">Image:</div>
-                            <div className="relative w-32 h-20 rounded-lg overflow-hidden border border-gray-200">
+                            <div className="relative w-24 h-16 sm:w-32 sm:h-20 rounded-lg overflow-hidden border border-gray-200">
                               <Image
                                 src={announcement.imageUrl}
                                 alt={announcement.title}

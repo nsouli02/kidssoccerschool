@@ -107,7 +107,8 @@ export default function Announcements() {
     }
   }
 
-  const formatDate = (dateString: string) => {
+  // Format event dates - preserve exact time entered (use UTC)
+  const formatEventDate = (dateString: string) => {
     const date = new Date(dateString)
     const locale = i18n.language === 'gr' ? 'el-GR' : 'en-US'
     
@@ -117,7 +118,22 @@ export default function Announcements() {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      timeZone: 'UTC' // Display the time as intended without timezone conversion
+      timeZone: 'UTC' // Preserve intended event time
+    })
+  }
+
+  // Format posted dates - show in user's local timezone
+  const formatPostedDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const locale = i18n.language === 'gr' ? 'el-GR' : 'en-US'
+    
+    return date.toLocaleDateString(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+      // No timeZone specified - uses local timezone
     })
   }
 
@@ -228,7 +244,7 @@ export default function Announcements() {
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <span><strong>{t('announcements.event_date')}:</strong> {announcement.eventDate ? formatDate(announcement.eventDate) : t('announcements.none')}</span>
+                          <span><strong>{t('announcements.event_date')}:</strong> {announcement.eventDate ? formatEventDate(announcement.eventDate) : t('announcements.none')}</span>
                         </div>
 
                         {/* Empty line separator */}
@@ -236,7 +252,7 @@ export default function Announcements() {
                         
                         {/* Posted date in italic */}
                         <div className="text-xs text-gray-500 italic">
-                          {t('announcements.posted')}: {formatDate(announcement.updatedAt)}
+                          {t('announcements.posted')}: {formatPostedDate(announcement.updatedAt)}
                         </div>
                       </div>
                     </div>
