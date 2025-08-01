@@ -268,11 +268,25 @@ export default function Admin() {
 
   const handleEdit = (announcement: Announcement) => {
     setEditingAnnouncement(announcement)
+    
+    // Format date for datetime-local input without timezone conversion
+    let formattedEventDate = ''
+    if (announcement.eventDate) {
+      const date = new Date(announcement.eventDate)
+      // Use UTC methods to preserve the intended time
+      const year = date.getUTCFullYear()
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0')
+      const day = String(date.getUTCDate()).padStart(2, '0')
+      const hours = String(date.getUTCHours()).padStart(2, '0')
+      const minutes = String(date.getUTCMinutes()).padStart(2, '0')
+      formattedEventDate = `${year}-${month}-${day}T${hours}:${minutes}`
+    }
+    
     setFormData({
       title: announcement.title,
       content: announcement.content,
       location: announcement.location || '',
-      eventDate: announcement.eventDate ? announcement.eventDate.split('T')[0] + 'T' + announcement.eventDate.split('T')[1]?.substring(0, 5) : '',
+      eventDate: formattedEventDate,
       imageUrl: announcement.imageUrl || ''
     })
     setShowForm(true)
@@ -348,12 +362,14 @@ export default function Admin() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     // Keep admin panel in English regardless of site language
+    // Use UTC methods to avoid timezone conversion issues
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      timeZone: 'UTC' // Display the time as intended without timezone conversion
     })
   }
 

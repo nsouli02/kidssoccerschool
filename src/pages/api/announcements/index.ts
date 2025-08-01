@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           title,
           content,
           location: location || null,
-          eventDate: eventDate ? new Date(eventDate) : null,
+          eventDate: eventDate ? new Date(eventDate + 'Z') : null, // Treat as UTC to preserve intended time
           imageUrl: imageUrl || null
         }
       })

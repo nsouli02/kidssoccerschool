@@ -116,7 +116,8 @@ export default function Announcements() {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      timeZone: 'UTC' // Display the time as intended without timezone conversion
     })
   }
 
