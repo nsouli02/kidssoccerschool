@@ -11,7 +11,8 @@
     "programs": "Programs",
     "gallery": "Gallery",
     "contact": "Contact",
-    "location": "Location"
+    "location": "Location",
+    "announcements": "Announcements"
   },
   "hero": {
     "title": "Building Character Through Football",
@@ -140,6 +141,22 @@
     "select_location": "Select Training Location:",
     "coordinates": "Coordinates",
     "open_in": "Open in Map App"
+  },
+  "announcements": {
+    "title": "Latest Announcements",
+    "subtitle": "Stay updated with our latest news and events",
+    "no_announcements": "No announcements available at the moment.",
+    "loading": "Loading announcements...",
+    "error": "Unable to load announcements. Please try again later.",
+    "posted": "Posted",
+    "location": "Location",
+    "event_date": "Event Date",
+    "none": "None",
+    "click_to_view": "Click to view full size",
+    "view_on_google_maps": "View on Google Maps",
+    "view_on_apple_maps": "View on Apple Maps", 
+    "open_in_waze": "Open in Waze",
+    "view_link": "View Link"
   },
   "footer": {
     "copyright": "© 2025 Kids Soccer School. All rights reserved.",

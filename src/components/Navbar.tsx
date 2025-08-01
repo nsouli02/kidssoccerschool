@@ -9,17 +9,26 @@ const Navbar = () => {
   const { t } = useTranslation('common')
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isNavigating, setIsNavigating] = useState(false)
+  
+  // Cleanup function to reset navigation state
+  const resetNavigationState = () => {
+    setIsNavigating(false)
+  }
 
-  // Ensure page is at top when locale changes
+  // Ensure page is at top when locale changes and reset navigation state
   useEffect(() => {
     const handleRouteChange = () => {
       window.scrollTo({ top: 0, behavior: 'instant' })
+      resetNavigationState()
     }
 
     router.events.on('routeChangeComplete', handleRouteChange)
+    router.events.on('routeChangeError', resetNavigationState)
     
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
+      router.events.off('routeChangeError', resetNavigationState)
     }
   }, [router.events])
 
@@ -28,14 +37,68 @@ const Navbar = () => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [router.locale])
 
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      resetNavigationState()
+    }
+  }, [])
+
+
+
   const navigation = [
-    { name: t('navigation.home'), href: '#home' },
-    { name: t('navigation.about'), href: '#about' },
-    { name: t('navigation.programs'), href: '#programs' },
-    { name: t('navigation.gallery'), href: '#gallery' },
-    { name: t('navigation.contact'), href: '#contact' },
-    { name: t('navigation.location'), href: '#location' },
+    { name: t('navigation.home'), href: '#home', isSection: true },
+    { name: t('navigation.about'), href: '#about', isSection: true },
+    { name: t('navigation.programs'), href: '#programs', isSection: true },
+    { name: t('navigation.gallery'), href: '#gallery', isSection: true },
+    { name: t('navigation.contact'), href: '#contact', isSection: true },
+    { name: t('navigation.location'), href: '#location', isSection: true },
+    { name: t('navigation.announcements'), href: '/announcements', isSection: false },
   ]
+
+  const handleNavigation = async (item: { href: string; isSection: boolean }) => {
+    // Prevent multiple simultaneous navigations
+    if (isNavigating) return
+    
+    setIsNavigating(true)
+    
+    try {
+      if (item.isSection) {
+        // For section navigation, navigate to homepage with hash
+        const homeUrl = router.locale === 'en' ? '/' : '/gr'
+        const targetUrl = `${homeUrl}${item.href}`
+        
+        if (router.pathname === '/' || router.pathname === '/gr') {
+          // Already on homepage, just scroll to section
+          const element = document.querySelector(item.href)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+            // Update URL after scrolling
+            setTimeout(() => {
+              router.replace(targetUrl, undefined, { shallow: true })
+              setIsNavigating(false)
+            }, 500)
+          } else {
+            setIsNavigating(false)
+          }
+        } else {
+          // Navigate to homepage with hash
+          await router.push(targetUrl)
+          setIsNavigating(false)
+        }
+      } else {
+        // For page navigation (like announcements)
+        await router.push(item.href)
+        setIsNavigating(false)
+      }
+    } catch (error) {
+      console.error('Navigation error:', error)
+      setIsNavigating(false)
+    }
+    
+    // Close mobile menu
+    setIsMenuOpen(false)
+  }
 
   const toggleLanguage = () => {
     const newLocale = router.locale === 'en' ? 'gr' : 'en'
@@ -56,42 +119,42 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" locale={router.locale}>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
-            >
-              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
-                <Image 
-                  src="/images/socker_logo.jpg" 
-                  alt="Kids Soccer School Logo" 
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
+              <Image 
+                src="/images/socker_logo.jpg" 
+                alt="Kids Soccer School Logo" 
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
+            </div>
               <div className="block">
                 <h1 className="text-lg sm:text-xl font-bold text-royal-blue">
-                  {t('common.academy_name')}
-                </h1>
+                {t('common.academy_name')}
+              </h1>
                 <p className="hidden sm:block text-sm text-gray-600">{t('common.tagline')}</p>
-              </div>
-            </motion.div>
+            </div>
+          </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navigation.map((item, index) => (
-              <motion.a
+              <motion.button
                 key={item.name}
-                href={item.href}
+                onClick={() => handleNavigation(item)}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-gray-700 hover:text-royal-blue font-medium transition-colors duration-300"
+                className="text-gray-700 hover:text-royal-blue font-medium transition-colors duration-300 bg-transparent border-none cursor-pointer"
               >
                 {item.name}
-              </motion.a>
+              </motion.button>
             ))}
           </div>
 
@@ -134,17 +197,16 @@ const Navbar = () => {
               className="lg:hidden mt-4 pt-4 border-t border-gray-200"
             >
               {navigation.map((item, index) => (
-                <motion.a
+                <motion.button
                   key={item.name}
-                  href={item.href}
+                  onClick={() => handleNavigation(item)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block py-3 text-gray-700 hover:text-royal-blue font-medium transition-colors duration-300"
+                  className="block py-3 text-gray-700 hover:text-royal-blue font-medium transition-colors duration-300 bg-transparent border-none cursor-pointer w-full text-left"
                 >
                   {item.name}
-                </motion.a>
+                </motion.button>
               ))}
             </motion.div>
           )}

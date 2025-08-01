@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://kidssoccerschool.vercel.app/sitemap.xml
+# Block admin and API routes from search engines
+Disallow: /admin
+Disallow: /api/
 
-# Block admin or sensitive areas if any (none for this site)
-# Disallow: /admin/ 
+# Sitemap
+Sitemap: https://kidssoccerschool.vercel.app/sitemap.xml 

@@ -1,0 +1,4 @@
+npm install @supabase/supabase-js prisma @prisma/client
+
+npx prisma init
+

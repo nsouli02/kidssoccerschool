@@ -6,7 +6,12 @@ const nextConfig = {
   i18n,
   images: {
     remotePatterns: [
-      // No external images needed - using only local images
+      {
+        protocol: 'https',
+        hostname: 'spqhgpofquuqfjyucaxy.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/announcements/**',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
   },
