@@ -269,23 +269,45 @@ export default function Announcements() {
       {/* Image Modal */}
       {expandedImage && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-75 z-50 overflow-auto"
           onClick={() => setExpandedImage(null)}
         >
-          <div className="relative max-w-4xl max-h-full">
-            <button
-              onClick={() => setExpandedImage(null)}
-              className="absolute -top-10 right-0 text-white hover:text-gray-300 text-xl font-bold"
+          {/* Fixed close button */}
+          <button
+            onClick={() => setExpandedImage(null)}
+            className="fixed top-4 right-4 z-60 bg-black bg-opacity-50 text-white hover:text-gray-300 text-xl font-bold px-3 py-2 rounded-full hover:bg-opacity-70 transition-all"
+          >
+            ✕
+          </button>
+          
+          {/* Scrollable content container */}
+          <div className="min-h-full flex items-center justify-center p-4 py-8">
+            <div 
+              className="relative w-full max-w-4xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕ Close
-            </button>
-            <Image
-              src={expandedImage}
-              alt="Expanded view"
-              width={800}
-              height={600}
-              className="max-w-full max-h-full object-contain"
-            />
+              <Image
+                src={expandedImage}
+                alt="Expanded view"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="h-auto object-contain rounded-lg shadow-2xl"
+                style={{ 
+                  maxHeight: '85vh',
+                  maxWidth: '90vw',
+                  width: 'auto',
+                  height: 'auto'
+                }}
+              />
+              
+              {/* Instructions text */}
+              <div className="text-center mt-4">
+                <p className="text-white text-sm opacity-75">
+                  Click outside to close • Scroll if image is larger than screen
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
