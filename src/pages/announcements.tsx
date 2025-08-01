@@ -203,13 +203,10 @@ export default function Announcements() {
                     )}
                     
                     <div className="p-8">
-                      <div className="flex justify-between items-start mb-4">
+                      <div className="mb-4">
                         <h2 className="text-2xl font-bold text-royal-blue">
                           {announcement.title}
                         </h2>
-                        <span className="text-sm text-gray-500">
-                          {t('announcements.posted')}: {formatDate(announcement.updatedAt)}
-                        </span>
                       </div>
 
                       <div className="prose max-w-none mb-6">
@@ -234,7 +231,13 @@ export default function Announcements() {
                           <span><strong>{t('announcements.event_date')}:</strong> {announcement.eventDate ? formatDate(announcement.eventDate) : t('announcements.none')}</span>
                         </div>
 
-
+                        {/* Empty line separator */}
+                        <div className="py-2"></div>
+                        
+                        {/* Posted date in italic */}
+                        <div className="text-xs text-gray-500 italic">
+                          {t('announcements.posted')}: {formatDate(announcement.updatedAt)}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
