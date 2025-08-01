@@ -1,33 +1,35 @@
 /** @type {import('next').NextConfig} */
 const { i18n } = require('./next-i18next.config')
 
-// Extract hostname from Supabase URL for dynamic configuration
-const getSupabaseHostname = () => {
+// Generate remote patterns dynamically from environment variables
+const getRemotePatterns = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (supabaseUrl) {
-    try {
-      const url = new URL(supabaseUrl)
-      return url.hostname
-    } catch (error) {
-      console.warn('Could not parse NEXT_PUBLIC_SUPABASE_URL:', error)
-    }
+  if (!supabaseUrl) {
+    console.warn('NEXT_PUBLIC_SUPABASE_URL not found - remote image optimization disabled')
+    return []
   }
-  // Fallback to current known domain
-  return 'klyymqfepozzaycsntaf.supabase.co'
+
+  try {
+    const url = new URL(supabaseUrl)
+    return [
+      {
+        protocol: url.protocol.slice(0, -1), // Remove trailing ':'
+        hostname: url.hostname,
+        port: url.port || '',
+        pathname: '/storage/v1/object/public/announcements/**',
+      },
+    ]
+  } catch (error) {
+    console.error('Invalid NEXT_PUBLIC_SUPABASE_URL:', error)
+    return []
+  }
 }
 
 const nextConfig = {
   reactStrictMode: true,
   i18n,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: getSupabaseHostname(),
-        port: '',
-        pathname: '/storage/v1/object/public/announcements/**',
-      },
-    ],
+    remotePatterns: getRemotePatterns(),
     formats: ['image/webp', 'image/avif'],
   },
   // Deployment configuration (uncomment for static export)
