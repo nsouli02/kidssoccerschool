@@ -142,6 +142,42 @@ export default function Announcements() {
       <Head>
         <title>{t('announcements.title')} - {t('common.academy_name')}</title>
         <meta name="description" content={t('announcements.subtitle')} />
+        <meta name="keywords" content="soccer announcements, football events, youth sports, Cyprus soccer school, children football programs" />
+        <meta name="author" content="Kids Soccer School" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={`${t('announcements.title')} - ${t('common.academy_name')}`} />
+        <meta property="og:description" content={t('announcements.subtitle')} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://kidssoccerschool.vercel.app${i18n.language === 'gr' ? '/gr' : ''}/announcements`} />
+        <meta property="og:image" content="https://kidssoccerschool.vercel.app/images/soccer_background_2.jpg" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${t('announcements.title')} - ${t('common.academy_name')}`} />
+        <meta name="twitter:description" content={t('announcements.subtitle')} />
+        <meta name="twitter:image" content="https://kidssoccerschool.vercel.app/images/soccer_background_2.jpg" />
+        
+        {/* Structured Data for Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": `${t('announcements.title')} - ${t('common.academy_name')}`,
+              "description": t('announcements.subtitle'),
+              "url": `https://kidssoccerschool.vercel.app${i18n.language === 'gr' ? '/gr' : ''}/announcements`,
+              "mainEntity": {
+                "@type": "SportsOrganization",
+                "name": t('common.academy_name'),
+                "url": "https://kidssoccerschool.vercel.app",
+                "logo": "https://kidssoccerschool.vercel.app/images/socker_logo.jpg",
+                "sport": "Soccer"
+              }
+            }),
+          }}
+        />
       </Head>
 
       <div className="min-h-screen bg-soft-white">

@@ -398,6 +398,7 @@ export default function Admin() {
       <>
         <Head>
           <title>Admin Login - Kids Soccer School</title>
+          <meta name="robots" content="noindex, nofollow" />
         </Head>
         <div className="min-h-screen bg-gradient-to-br from-soft-white via-blue-50 to-indigo-100">
           <Navbar />
@@ -511,6 +512,7 @@ export default function Admin() {
     <>
       <Head>
         <title>Admin Panel - Kids Soccer School</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/50">
