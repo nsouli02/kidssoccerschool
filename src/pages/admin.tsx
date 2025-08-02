@@ -1260,8 +1260,9 @@ export default function Admin() {
                         const isPaid = yearPayments[selectedMonth] === true
                         
                         return (
-                          <div key={student.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 hover:shadow-xl transition-all duration-200">
-                            <div className="flex justify-between items-start mb-4">
+                          <div key={student.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6 hover:shadow-xl transition-all duration-200">
+                            {/* Desktop Layout */}
+                            <div className="hidden sm:flex justify-between items-start mb-4">
                               <div className="flex-1">
                                 <h3 className="text-lg font-bold text-gray-800">
                                   {student.kidName || 'No name'} {student.kidSurname || ''}
@@ -1302,6 +1303,59 @@ export default function Admin() {
                                   <button
                                     onClick={() => handleStudentDelete(student.id)}
                                     className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Mobile Layout */}
+                            <div className="sm:hidden space-y-4">
+                              <div>
+                                <h3 className="text-lg font-bold text-gray-800 mb-1">
+                                  {student.kidName || 'No name'} {student.kidSurname || ''}
+                                </h3>
+                                <p className="text-gray-600 text-sm">Parent: {student.parentName || 'Not specified'}</p>
+                                <p className="text-xs text-gray-500">Added: {new Date(student.createdAt).toLocaleDateString()}</p>
+                              </div>
+                              
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="text-sm font-medium text-gray-700 mb-1">
+                                    {new Date(0, parseInt(selectedMonth) - 1).toLocaleString('default', { month: 'long' })} {selectedYear}
+                                  </p>
+                                  <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                    isPaid 
+                                      ? 'bg-green-100 text-green-800' 
+                                      : 'bg-red-100 text-red-800'
+                                  }`}>
+                                    {isPaid ? 'PAID' : 'NOT PAID'}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-1 gap-3">
+                                <button
+                                  onClick={() => updatePaymentStatus(student.id, selectedYear, selectedMonth, !isPaid)}
+                                  className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                                    isPaid
+                                      ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                      : 'bg-green-100 text-green-700 hover:bg-green-200'
+                                  }`}
+                                >
+                                  Mark as {isPaid ? 'Unpaid' : 'Paid'}
+                                </button>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <button
+                                    onClick={() => handleStudentEdit(student)}
+                                    className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm font-medium"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() => handleStudentDelete(student.id)}
+                                    className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm font-medium"
                                   >
                                     Delete
                                   </button>
