@@ -32,12 +32,22 @@ interface AnnouncementFormData {
 }
 
 // Student interfaces for payment tracking
+interface Category {
+  id: number
+  name: string
+  createdAt: string
+  updatedAt: string
+}
+
+// Student interfaces for payment tracking
 interface Student {
   id: number
   kidName?: string
   kidSurname?: string
   parentName?: string
   payments?: any // JSON field containing payment data
+  categoryId?: number | null
+  category?: Category | null
   createdAt: string
   updatedAt: string
 }
@@ -47,6 +57,7 @@ interface StudentFormData {
   kidSurname: string
   parentName: string
   payments: any
+  categoryId: number | null
 }
 
 interface PaymentData {
@@ -81,16 +92,115 @@ export default function Admin() {
     kidName: '',
     kidSurname: '',
     parentName: '',
-    payments: {}
+    payments: {},
+    categoryId: null
   })
   const [activeTab, setActiveTab] = useState<'announcements' | 'students'>('announcements')
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString())
   const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString())
+  const [categories, setCategories] = useState<Category[]>([])
+  const [filterStatus, setFilterStatus] = useState<'all' | 'paid' | 'unpaid'>('all')
+  const [filterCategoryId, setFilterCategoryId] = useState<number | 'all'>('all')
+  const [sortMode, setSortMode] = useState<'none' | 'paidFirst' | 'unpaidFirst' | 'nameAsc'>('none')
+
+  // Simple inline Category manager component (kept here for minimal changes)
+  const CategoryManager = ({ categories, onChanged }: { categories: Category[]; onChanged: () => void }) => {
+    // Local state for add/edit interactions (inline UI for minimal complexity)
+    const [newName, setNewName] = useState('')
+    const [editingId, setEditingId] = useState<number | null>(null)
+    const [editName, setEditName] = useState('')
+
+    const create = async () => {
+      if (!newName.trim()) return
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+      await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({ name: newName.trim() })
+      })
+      setNewName('')
+      onChanged()
+    }
+
+    const beginEdit = (c: Category) => {
+      setEditingId(c.id)
+      setEditName(c.name)
+    }
+
+    const saveEdit = async () => {
+      if (editingId == null || !editName.trim()) { setEditingId(null); return }
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+      await fetch(`/api/categories/${editingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({ name: editName.trim() })
+      })
+      setEditingId(null)
+      onChanged()
+    }
+
+    const remove = async (id: number) => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+      await fetch(`/api/categories/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      })
+      onChanged()
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="New category name"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          />
+          <button onClick={create} className="px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">Add Category</button>
+        </div>
+        {categories.length > 0 && (
+          <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 overflow-hidden">
+            {categories.map((c) => (
+              <div key={c.id} className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 bg-white">
+                {editingId === c.id ? (
+                  <input
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                  />
+                ) : (
+                  <div className="flex-1 font-medium text-gray-800">{c.name}</div>
+                )}
+                <div className="flex gap-2 justify-end">
+                  {editingId === c.id ? (
+                    <>
+                      <button onClick={saveEdit} className="px-3 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm">Save</button>
+                      <button onClick={() => setEditingId(null)} className="px-3 py-2 border border-gray-300 rounded-lg text-sm">Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => beginEdit(c)} className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm">Edit</button>
+                      <button onClick={() => remove(c.id)} className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm">Delete</button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   useEffect(() => {
     checkUser()
     fetchAnnouncements()
     fetchStudents()
+    fetchCategories()
     
     // Listen for authentication state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -196,6 +306,17 @@ export default function Admin() {
     }
   }
 
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/categories')
+      if (!res.ok) throw new Error('Failed to fetch categories')
+      const data = await res.json()
+      setCategories(data)
+    } catch (err) {
+      console.error('Error fetching categories:', err)
+    }
+  }
+
   const handleStudentSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) return
@@ -224,7 +345,7 @@ export default function Admin() {
       if (!response.ok) throw new Error('Failed to save client')
 
       // Reset form and refresh students
-      setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {} })
+      setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {}, categoryId: null })
       setShowStudentForm(false)
       setEditingStudent(null)
       fetchStudents()
@@ -244,7 +365,8 @@ export default function Admin() {
       kidName: student.kidName || '',
       kidSurname: student.kidSurname || '',
       parentName: student.parentName || '',
-      payments: student.payments || {}
+      payments: student.payments || {},
+      categoryId: student.categoryId ?? null
     })
     setShowStudentForm(true)
   }
@@ -307,7 +429,8 @@ export default function Admin() {
           kidName: student.kidName,
           kidSurname: student.kidSurname,
           parentName: student.parentName,
-          payments: payments
+          payments: payments,
+          categoryId: student.categoryId ?? null
         })
       })
 
@@ -1073,7 +1196,7 @@ export default function Admin() {
                     onClick={() => {
                       setShowStudentForm(!showStudentForm)
                       setEditingStudent(null)
-                      setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {} })
+                      setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {}, categoryId: null })
                     }}
                     className={`${
                       showStudentForm 
@@ -1149,6 +1272,22 @@ export default function Admin() {
                             placeholder="Enter kid's last name"
                           />
                         </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                          <select
+                            value={studentFormData.categoryId ?? ''}
+                            onChange={(e) => setStudentFormData({ ...studentFormData, categoryId: e.target.value ? Number(e.target.value) : null })}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          >
+                            <option value="">None</option>
+                            {categories.map((c) => (
+                              <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                          </select>
+                          {categories.length === 0 && (
+                            <p className="text-xs text-gray-500 mt-1">No categories yet. Create one below.</p>
+                          )}
+                        </div>
                       </div>
 
                       <div>
@@ -1177,7 +1316,7 @@ export default function Admin() {
                           onClick={() => {
                             setShowStudentForm(false)
                             setEditingStudent(null)
-                            setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {} })
+                            setStudentFormData({ kidName: '', kidSurname: '', parentName: '', payments: {}, categoryId: null })
                           }}
                           className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                         >
@@ -1187,6 +1326,19 @@ export default function Admin() {
                     </form>
                   </motion.div>
                 )}
+
+                {/* Category Management */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 mb-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-800">Categories</h3>
+                    </div>
+                  </div>
+                  <CategoryManager categories={categories} onChanged={fetchCategories} />
+                </div>
 
                 {/* Payment Tracking Section */}
                 <div className="space-y-6">
@@ -1204,9 +1356,9 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {/* Year/Month Selector */}
+                  {/* Filters & Year/Month Selector */}
                   <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 mb-6">
-                    <div className="flex flex-wrap gap-4 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-end">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
                         <select
@@ -1238,6 +1390,56 @@ export default function Admin() {
                           })}
                         </select>
                       </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select
+                          value={filterStatus}
+                          onChange={(e) => setFilterStatus(e.target.value as 'all' | 'paid' | 'unpaid')}
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        >
+                          <option value="all">All</option>
+                          <option value="paid">Paid</option>
+                          <option value="unpaid">Not Paid</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select
+                          value={filterCategoryId}
+                          onChange={(e) => setFilterCategoryId(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        >
+                          <option value="all">All Categories</option>
+                          {categories.map((c) => (
+                            <option key={c.id} value={c.id}>{c.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="xl:col-span-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Sort</label>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            className={`px-3 py-2 rounded-lg text-sm border ${sortMode==='none' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-gray-700 border-gray-300'}`}
+                            onClick={() => setSortMode('none')}
+                            type="button"
+                          >Default</button>
+                          <button
+                            className={`px-3 py-2 rounded-lg text-sm border ${sortMode==='paidFirst' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-gray-700 border-gray-300'}`}
+                            onClick={() => setSortMode('paidFirst')}
+                            type="button"
+                          >Paid first</button>
+                          <button
+                            className={`px-3 py-2 rounded-lg text-sm border ${sortMode==='unpaidFirst' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-gray-700 border-gray-300'}`}
+                            onClick={() => setSortMode('unpaidFirst')}
+                            type="button"
+                          >Not paid first</button>
+                          <button
+                            className={`px-3 py-2 rounded-lg text-sm border ${sortMode==='nameAsc' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-gray-700 border-gray-300'}`}
+                            onClick={() => setSortMode('nameAsc')}
+                            type="button"
+                          >Name A→Z</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
@@ -1254,11 +1456,35 @@ export default function Admin() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {students.map((student) => {
+                      {students
+                        .filter((s) => {
+                          const payments = s.payments || {}
+                          const yearPayments = payments[selectedYear] || {}
+                          const paid = yearPayments[selectedMonth] === true
+                          const statusOk = filterStatus === 'all' || (filterStatus === 'paid' ? paid : !paid)
+                          const categoryOk = filterCategoryId === 'all' || s.categoryId === filterCategoryId
+                          return statusOk && categoryOk
+                        })
+                        .sort((a, b) => {
+                          if (sortMode === 'nameAsc') {
+                            return (a.kidName || '').localeCompare(b.kidName || '')
+                          }
+                          const getPaid = (s: Student) => {
+                            const p = s.payments || {}; const yp = p[selectedYear] || {}; return yp[selectedMonth] === true
+                          }
+                          if (sortMode === 'paidFirst') {
+                            return Number(getPaid(b)) - Number(getPaid(a))
+                          }
+                          if (sortMode === 'unpaidFirst') {
+                            return Number(getPaid(a)) - Number(getPaid(b))
+                          }
+                          return 0
+                        })
+                        .map((student) => {
                         const payments = student.payments || {}
                         const yearPayments = payments[selectedYear] || {}
                         const isPaid = yearPayments[selectedMonth] === true
-                        
+                        const categoryName = categories.find((c) => c.id === (student.categoryId ?? -1))?.name || 'None'
                         return (
                           <div key={student.id} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-4 sm:p-6 hover:shadow-xl transition-all duration-200">
                             {/* Desktop Layout */}
@@ -1269,6 +1495,7 @@ export default function Admin() {
                                 </h3>
                                 <p className="text-gray-600">Parent: {student.parentName || 'Not specified'}</p>
                                 <p className="text-sm text-gray-500">Added: {new Date(student.createdAt).toLocaleDateString()}</p>
+                                <p className="text-xs italic text-gray-500 mt-2">Category: {categoryName}</p>
                               </div>
                               <div className="flex items-center space-x-3">
                                 <div className="text-right">
@@ -1318,6 +1545,7 @@ export default function Admin() {
                                 </h3>
                                 <p className="text-gray-600 text-sm">Parent: {student.parentName || 'Not specified'}</p>
                                 <p className="text-xs text-gray-500">Added: {new Date(student.createdAt).toLocaleDateString()}</p>
+                                <p className="text-xs italic text-gray-500 mt-2">Category: {categoryName}</p>
                               </div>
                               
                               <div className="flex justify-between items-center">

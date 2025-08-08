@@ -13,11 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       }
 
-      // Get all clients, ordered by creation date (newest first)
+      // Get all students with optional category, newest first
       const clients = await prisma.student.findMany({
-        orderBy: {
-          createdAt: 'desc'
-        }
+        orderBy: { createdAt: 'desc' }
       })
       
       res.status(200).json(clients)
@@ -40,17 +38,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ error: 'Unauthorized' })
       }
       
-      const { kidName, kidSurname, parentName, payments } = req.body
+      const { kidName, kidSurname, parentName, payments, categoryId } = req.body
       
       // Create new client - all fields are optional except auto-generated id
-      const client = await prisma.student.create({
-        data: {
-          kidName: kidName || null,
-          kidSurname: kidSurname || null,
-          parentName: parentName || null,
-          payments: payments || null
-        }
-      })
+      const data: any = {
+        kidName: kidName || null,
+        kidSurname: kidSurname || null,
+        parentName: parentName || null,
+        payments: payments || null
+      }
+      if (typeof categoryId === 'number') {
+        data.category = { connect: { id: categoryId } }
+      }
+
+      const client = await prisma.student.create({ data })
       
       res.status(201).json(client)
     } catch (error) {

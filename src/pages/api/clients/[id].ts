@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ error: 'Unauthorized' })
       }
       
-      const { kidName, kidSurname, parentName, payments } = req.body
+      const { kidName, kidSurname, parentName, payments, categoryId } = req.body
       
       // Check if client exists
       const existingClient = await prisma.student.findUnique({
@@ -38,15 +38,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       
       // Update client - all fields are optional
-      const updatedClient = await prisma.student.update({
-        where: { id: clientId },
-        data: {
-          kidName: kidName || null,
-          kidSurname: kidSurname || null,
-          parentName: parentName || null,
-          payments: payments || null
-        }
-      })
+      const data: any = {
+        kidName: kidName || null,
+        kidSurname: kidSurname || null,
+        parentName: parentName || null,
+        payments: payments || null
+      }
+      if (categoryId === null) {
+        data.category = { disconnect: true }
+      } else if (typeof categoryId === 'number') {
+        data.category = { connect: { id: categoryId } }
+      }
+      const updatedClient = await prisma.student.update({ where: { id: clientId }, data })
       
       res.status(200).json(updatedClient)
     } catch (error) {
