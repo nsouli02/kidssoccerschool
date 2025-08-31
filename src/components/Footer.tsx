@@ -139,6 +139,18 @@ const Footer = () => {
           className="text-center text-gray-300"
         >
           <p>{t('footer.copyright')}</p>
+          <br />
+          <p>
+            Developer: {' '}
+            <a 
+              href="https://panagiotis-webdev.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-golden-yellow hover:text-white transition-colors duration-300"
+            >
+              Panagiotis Chrysanthou
+            </a>
+          </p>
         </motion.div>
       </div>
     </footer>
