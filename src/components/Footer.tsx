@@ -141,15 +141,17 @@ const Footer = () => {
           <p>{t('footer.copyright')}</p>
           <br />
           <p>
-            Developer: {' '}
+            Developers: {' '}
             <a 
               href="https://panagiotis-webdev.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-golden-yellow hover:text-white transition-colors duration-300"
+              className="text-gray-300 underline hover:text-white transition-colors duration-300"
             >
               Panagiotis Chrysanthou
             </a>
+            {' & '}
+            <span className="text-gray-300">Nikolas Souli</span>
           </p>
         </motion.div>
       </div>
